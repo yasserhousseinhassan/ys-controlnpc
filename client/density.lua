@@ -21,11 +21,14 @@ CreateThread(function()
         -- Ped density natives (must be called every frame)
         SetPedDensityMultiplierThisFrame(pedDensity)
         SetScenarioPedDensityMultiplierThisFrame(pedDensity)
+        SetAmbientPedRangeMultiplierThisFrame(pedDensity > 0.0 and 1.0 or 0.0)
 
         -- Vehicle density natives (must be called every frame)
         SetVehicleDensityMultiplierThisFrame(vehDensity)
         SetRandomVehicleDensityMultiplierThisFrame(vehDensity)
         SetParkedVehicleDensityMultiplierThisFrame(parkedDensity)
+        SetScenarioVehicleDensityMultiplierThisFrame(vehDensity)
+        SetAmbientVehicleRangeMultiplierThisFrame(vehDensity > 0.0 and 1.0 or 0.0)
 
         -- Random events
         SetRandomEventFlag(YS.State.randomEventsEnabled)
