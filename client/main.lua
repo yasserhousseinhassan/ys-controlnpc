@@ -113,8 +113,8 @@ function YS.ApplyPreset(presetKey)
     ApplyScenarioStates()
     SyncToServer()
 
-    YS.Notify(preset.label .. ' activé', 'success')
-    YS.Log(preset.label .. ' chargé')
+    YS.Notify(preset.label .. ' activated', 'success')
+    YS.Log(preset.label .. ' loaded')
 end
 
 --- Synchronize current state to the server for persistence
@@ -192,7 +192,7 @@ end)
 -- └──────────────────────────────────────┘
 
 local function openMenuHandler()
-    if not Config.Permission.restrictToAce then
+    if not Config.Permission.restrict then
         OpenMainMenu()
         return
     end
@@ -204,7 +204,7 @@ local function openMenuHandler()
         OpenMainMenu()
     else
         hasPermission = false
-        YS.Notify('Accès refusé — Permission manquante', 'error')
+        YS.Notify('Access denied — Missing permission', 'error')
     end
 end
 
@@ -217,7 +217,7 @@ RegisterCommand(Config.CommandMenuAlt, function()
 end, false)
 
 if Config.KeyBind then
-    RegisterKeyMapping(Config.CommandMenu, 'Ouvrir YS Control NPC', 'keyboard', Config.KeyBind)
+    RegisterKeyMapping(Config.CommandMenu, 'Open YS Control NPC', 'keyboard', Config.KeyBind)
 end
 
 -- ┌──────────────────────────────────────┐

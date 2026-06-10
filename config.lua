@@ -33,8 +33,11 @@ Config.Defaults = {
 -- └──────────────────────────────────────┘
 
 Config.Permission = {
-    acePermission = 'ys.controlnpc',          -- ACE permission required
-    restrictToAce = true,                     -- If false, all players can use it
+    restrict = true,                          -- Set to false to allow everyone to open the menu
+    checkAce = true,                          -- Check ACE permission
+    acePermission = 'ys.controlnpc',          -- ACE permission required if checkAce is true
+    checkFramework = true,                    -- Auto-detect ESX/QBCore and check player groups
+    allowedGroups = { 'admin', 'superadmin', 'god' }, -- Allowed framework groups (e.g. admin group)
 }
 
 -- ┌──────────────────────────────────────┐
@@ -58,8 +61,8 @@ Config.Modules = {
 
 Config.Presets = {
     performance = {
-        label = 'Mode Performance',
-        description = 'FPS maximum — Aucun PNJ ni trafic',
+        label = 'Performance Mode',
+        description = 'Maximum FPS — No NPCs or traffic',
         pedDensity = 0.0,
         vehicleDensity = 0.0,
         parkedVehicleDensity = 0.0,
@@ -67,8 +70,8 @@ Config.Presets = {
         randomEventsEnabled = false,
     },
     roleplay = {
-        label = 'Mode Roleplay',
-        description = 'Population réduite — Immersion RP optimale',
+        label = 'Roleplay Mode',
+        description = 'Reduced population — Optimal RP immersion',
         pedDensity = 0.25,
         vehicleDensity = 0.25,
         parkedVehicleDensity = 0.25,
@@ -76,8 +79,8 @@ Config.Presets = {
         randomEventsEnabled = false,
     },
     semirp = {
-        label = 'Mode Semi-RP',
-        description = 'Population modérée — Équilibre performances et immersion',
+        label = 'Semi-RP Mode',
+        description = 'Moderate population — Balanced performance and immersion',
         pedDensity = 0.5,
         vehicleDensity = 0.5,
         parkedVehicleDensity = 0.5,
@@ -85,8 +88,8 @@ Config.Presets = {
         randomEventsEnabled = true,
     },
     vanilla = {
-        label = 'Mode Vanilla GTA',
-        description = 'Population native GTA V — Expérience originale',
+        label = 'Vanilla GTA Mode',
+        description = 'Native GTA V population — Original experience',
         pedDensity = 1.0,
         vehicleDensity = 1.0,
         parkedVehicleDensity = 1.0,
@@ -153,7 +156,7 @@ Config.Scenarios = {
         },
     },
     firetruck = {
-        label = 'Pompiers',
+        label = 'Firefighters',
         scenarios = {
             'WORLD_VEHICLE_FIRE_TRUCK',
         },
@@ -167,7 +170,7 @@ Config.Scenarios = {
         },
     },
     cyclists = {
-        label = 'Cyclistes',
+        label = 'Cyclists',
         scenarios = {
             'WORLD_VEHICLE_BICYCLE_BMX',
             'WORLD_VEHICLE_BICYCLE_BMX_BALLAS',
@@ -181,7 +184,7 @@ Config.Scenarios = {
         },
     },
     boats = {
-        label = 'Bateaux',
+        label = 'Boats',
         scenarios = {
             'WORLD_VEHICLE_BOAT_IDLE',
             'WORLD_VEHICLE_BOAT_IDLE_ALAMO',
@@ -189,20 +192,20 @@ Config.Scenarios = {
         },
     },
     helicopters = {
-        label = 'Hélicoptères',
+        label = 'Helicopters',
         scenarios = {
             'WORLD_VEHICLE_HELI_LIFEGUARD',
         },
     },
     military = {
-        label = 'Avions Militaires',
+        label = 'Military Planes',
         scenarios = {
             'WORLD_VEHICLE_MILITARY_PLANES_BIG',
             'WORLD_VEHICLE_MILITARY_PLANES_SMALL',
         },
     },
     trucks = {
-        label = 'Camions & Remorques',
+        label = 'Trucks & Trailers',
         scenarios = {
             'WORLD_VEHICLE_TRUCK_LOGS',
             'WORLD_VEHICLE_TRUCKS_TRAILERS',
@@ -210,7 +213,7 @@ Config.Scenarios = {
         },
     },
     special = {
-        label = 'Véhicules Spéciaux',
+        label = 'Special Vehicles',
         scenarios = {
             'WORLD_VEHICLE_ATTRACTOR',
             'WORLD_VEHICLE_BROKEN_DOWN',
