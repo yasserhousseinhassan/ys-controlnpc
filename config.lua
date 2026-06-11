@@ -13,7 +13,6 @@ Config = {}
 
 Config.Debug = false                          -- Enable debug prints in console
 Config.CommandMenu = 'npcmenu'                -- Primary command to open menu
-Config.CommandMenuAlt = 'controlnpc'          -- Alternative command
 
 -- ┌──────────────────────────────────────┐
 -- │          DEFAULT DENSITIES           │

@@ -59,15 +59,11 @@ If `checkFramework = true` is enabled in `config.lua`, the script will automatic
 
 > **Note:** You can completely disable authorization checks by setting `Config.Permission.restrict = false` in `config.lua`.
 
----
+## Commands
 
-## Commands & Keybinds
-
-| Command / Key | Action |
+| Command | Action |
 |---|---|
 | `/npcmenu` | Opens the main menu |
-| `/controlnpc` | Opens the main menu (alternative command) |
-| `F5` | Keyboard keybind shortcut (configurable) |
 
 ---
 
@@ -151,7 +147,7 @@ Your current configuration is automatically saved to `data/settings.json` and re
 
 ## License
 
-© 2024 **Yasser Storm Development** — All rights reserved.
+© 2026 **Yasser Storm Development** — All rights reserved.
 This script is protected and cannot be redistributed without prior authorization.
 
 ---

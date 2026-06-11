@@ -212,13 +212,9 @@ RegisterCommand(Config.CommandMenu, function()
     openMenuHandler()
 end, false)
 
-RegisterCommand(Config.CommandMenuAlt, function()
-    openMenuHandler()
-end, false)
 
-if Config.KeyBind then
-    RegisterKeyMapping(Config.CommandMenu, 'Open YS Control NPC', 'keyboard', Config.KeyBind)
-end
+
+
 
 -- ┌──────────────────────────────────────┐
 -- │       STATS UPDATE THREAD            │
