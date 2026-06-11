@@ -4,7 +4,7 @@
     ║          Developed by Yasser Storm Development           ║
     ╚══════════════════════════════════════════════════════════╝
     
-    Full OX Lib context menu interface with premium design.
+    Full OX Lib context menu interface with clean design.
     All menus use ox_lib context menus exclusively.
 ]]
 

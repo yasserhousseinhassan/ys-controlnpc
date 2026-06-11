@@ -1,13 +1,13 @@
 # YS-CONTROLNPC
 
-> **Premium NPC & Traffic Control System for FiveM**
+> **Free NPC & Traffic Control System for FiveM**
 > Developed by **Yasser Storm Development**
 
 ---
 
 ## Description
 
-**ys-controlnpc** is a premium FiveM resource that provides complete and dynamic control over the GTA V world population. Manage NPCs, traffic, scenarios, and events in real time through a sleek OX Lib interface — no server restart required.
+**ys-controlnpc** is a free and open-source FiveM resource that provides complete and dynamic control over the GTA V world population. Manage NPCs, traffic, scenarios, and events in real time through a sleek OX Lib interface — no server restart required.
 
 ---
 
@@ -147,12 +147,11 @@ Your current configuration is automatically saved to `data/settings.json` and re
 
 ## License
 
-© 2026 **Yasser Storm Development** — All rights reserved.
-This script is protected and cannot be redistributed without prior authorization.
+This project is licensed under the MIT License. Feel free to use, modify, and redistribute it.
 
 ---
 
 <p align="center">
   <b>Yasser Storm Development</b><br>
-  Premium FiveM Resources
+  Free FiveM Resources
 </p>
