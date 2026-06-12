@@ -20,7 +20,7 @@ CreateThread(function()
 
         -- Ped density natives (must be called every frame)
         SetPedDensityMultiplierThisFrame(pedDensity)
-        SetScenarioPedDensityMultiplierThisFrame(pedDensity)
+        SetScenarioPedDensityMultiplierThisFrame(pedDensity, pedDensity)
         SetAmbientPedRangeMultiplierThisFrame(pedDensity > 0.0 and 1.0 or 0.0)
 
         -- Vehicle density natives (must be called every frame)
@@ -38,7 +38,10 @@ CreateThread(function()
 
         -- Dispatch services control
         if pedDensity == 0.0 then
-            -- Disable all dispatch services when ped density is zero
+            -- Disable all dispatch services and random cops when ped density is zero
+            SetCreateRandomCops(false)
+            SetCreateRandomCopsNotOnScenarios(false)
+            SetCreateRandomCopsOnScenarios(false)
             for i = 1, 15 do
                 EnableDispatchService(i, false)
             end
