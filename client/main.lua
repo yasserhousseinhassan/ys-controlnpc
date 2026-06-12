@@ -167,6 +167,9 @@ end)
 
 RegisterNetEvent('ys-controlnpc:client:receiveState', function(savedState)
     if savedState then
+        local oldPedDensity = YS.State.pedDensity
+        local oldVehDensity = YS.State.vehicleDensity
+
         YS.State.pedDensity = savedState.pedDensity or Config.Defaults.pedDensity
         YS.State.vehicleDensity = savedState.vehicleDensity or Config.Defaults.vehicleDensity
         YS.State.parkedVehicleDensity = savedState.parkedVehicleDensity or Config.Defaults.parkedVehicleDensity
@@ -179,6 +182,21 @@ RegisterNetEvent('ys-controlnpc:client:receiveState', function(savedState)
         if YS.State.randomEventsEnabled == nil then YS.State.randomEventsEnabled = Config.Defaults.randomEventsEnabled end
         if YS.State.distantLights == nil then YS.State.distantLights = Config.Defaults.distantLights end
         YS.Debug('State loaded from server')
+
+        -- Apply scenario states dynamically
+        ApplyScenarioStates()
+
+        -- Clear existing entities immediately if density is reduced or set to 0
+        local ped = PlayerPedId()
+        if ped and ped > 0 then
+            local coords = GetEntityCoords(ped)
+            if YS.State.pedDensity < oldPedDensity or YS.State.pedDensity == 0.0 then
+                ClearAreaOfPeds(coords.x, coords.y, coords.z, 250.0, 1)
+            end
+            if YS.State.vehicleDensity < oldVehDensity or YS.State.vehicleDensity == 0.0 then
+                ClearAreaOfVehicles(coords.x, coords.y, coords.z, 250.0, false, false, false, false, false)
+            end
+        end
     end
     isReady = true
 end)

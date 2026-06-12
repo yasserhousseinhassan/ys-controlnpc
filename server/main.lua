@@ -102,6 +102,9 @@ RegisterNetEvent('ys-controlnpc:server:saveState', function(state)
     if Config.Save.enabled then
         SaveSettings(currentState)
     end
+
+    -- Broadcast updated state to all clients in real-time
+    TriggerClientEvent('ys-controlnpc:client:receiveState', -1, currentState)
 end)
 
 -- ┌──────────────────────────────────────┐
