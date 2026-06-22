@@ -11,7 +11,7 @@ Config = {}
 -- │          GENERAL SETTINGS            │
 -- └──────────────────────────────────────┘
 
-Config.Debug = false                          -- Enable debug prints in console
+Config.Debug = true                          -- Enable debug prints in console
 Config.CommandMenu = 'npcmenu'                -- Primary command to open menu
 Config.CommandMenuAlt = 'controlnpc'          -- Alternative command
 
@@ -34,7 +34,7 @@ Config.Defaults = {
 
 Config.Permission = {
     acePermission = 'ys.controlnpc',          -- ACE permission required
-    restrictToAce = true,                     -- If false, all players can use it
+    restrictToAce = false,                     -- If false, all players can use it
 }
 
 -- ┌──────────────────────────────────────┐

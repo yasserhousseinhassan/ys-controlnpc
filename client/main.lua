@@ -178,6 +178,7 @@ RegisterNetEvent('ys-controlnpc:client:receiveState', function(savedState)
         if YS.State.scenariosEnabled == nil then YS.State.scenariosEnabled = Config.Defaults.scenariosEnabled end
         if YS.State.randomEventsEnabled == nil then YS.State.randomEventsEnabled = Config.Defaults.randomEventsEnabled end
         if YS.State.distantLights == nil then YS.State.distantLights = Config.Defaults.distantLights end
+        ApplyScenarioStates()
         YS.Debug('State loaded from server')
     end
     isReady = true

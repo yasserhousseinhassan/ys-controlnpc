@@ -20,7 +20,7 @@ CreateThread(function()
 
         -- Ped density natives (must be called every frame)
         SetPedDensityMultiplierThisFrame(pedDensity)
-        SetScenarioPedDensityMultiplierThisFrame(pedDensity)
+        SetScenarioPedDensityMultiplierThisFrame(pedDensity, pedDensity)
 
         -- Vehicle density natives (must be called every frame)
         SetVehicleDensityMultiplierThisFrame(vehDensity)

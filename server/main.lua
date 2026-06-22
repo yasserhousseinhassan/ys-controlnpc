@@ -93,6 +93,7 @@ RegisterNetEvent('ys-controlnpc:server:saveState', function(state)
 
     -- Update server state
     currentState = state
+    TriggerClientEvent('ys-controlnpc:client:receiveState', -1, currentState)
 
     -- Log the change
     local playerName = GetPlayerName(src) or ('Player ' .. src)
