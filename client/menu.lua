@@ -4,7 +4,7 @@
     ║          Developed by Yasser Storm Development           ║
     ╚══════════════════════════════════════════════════════════╝
     
-    Full OX Lib context menu interface with premium design.
+    Full OX Lib context menu interface with clean design.
     All menus use ox_lib context menus exclusively.
 ]]
 
@@ -14,9 +14,9 @@
 
 local function statusBadge(enabled)
     if enabled then
-        return '~g~ACTIF~s~'
+        return '~g~ACTIVE~s~'
     else
-        return '~r~INACTIF~s~'
+        return '~r~INACTIVE~s~'
     end
 end
 
@@ -30,7 +30,7 @@ local function densityOptions(current)
         local val = i / 10
         local label = math.floor(val * 100) .. '%'
         if val == current then
-            label = label .. ' (Actuel)'
+            label = label .. ' (Current)'
         end
         options[#options + 1] = { label = label, value = val }
     end
@@ -52,86 +52,86 @@ function OpenMainMenu()
     }
 
     -- Active Preset indicator
-    local presetLabel = 'Aucun'
+    local presetLabel = 'None'
     if YS.State.activePreset and Config.Presets[YS.State.activePreset] then
         presetLabel = Config.Presets[YS.State.activePreset].label
     elseif YS.State.activePreset == 'custom' then
         presetLabel = 'Custom'
     end
     options[#options + 1] = {
-        title = 'Profil Actif: ' .. presetLabel,
-        description = 'PNJ: ' .. percentLabel(YS.State.pedDensity) .. ' | Trafic: ' .. percentLabel(YS.State.vehicleDensity),
+        title = 'Active Profile: ' .. presetLabel,
+        description = 'NPC: ' .. percentLabel(YS.State.pedDensity) .. ' | Traffic: ' .. percentLabel(YS.State.vehicleDensity),
         readOnly = true,
     }
 
-    -- 1. Gestion des PNJ
+    -- 1. NPC Management
     if Config.Modules.peds then
         options[#options + 1] = {
-            title = 'Gestion des PNJ',
-            description = 'Densité: ' .. percentLabel(YS.State.pedDensity) .. ' | ' .. statusBadge(YS.State.pedDensity > 0),
+            title = 'NPC Management',
+            description = 'Density: ' .. percentLabel(YS.State.pedDensity) .. ' | ' .. statusBadge(YS.State.pedDensity > 0),
             menu = 'ys_peds_menu',
         }
     end
 
-    -- 2. Gestion du trafic
+    -- 2. Traffic Management
     if Config.Modules.traffic then
         options[#options + 1] = {
-            title = 'Gestion du Trafic',
-            description = 'Densité: ' .. percentLabel(YS.State.vehicleDensity) .. ' | ' .. statusBadge(YS.State.vehicleDensity > 0),
+            title = 'Traffic Management',
+            description = 'Density: ' .. percentLabel(YS.State.vehicleDensity) .. ' | ' .. statusBadge(YS.State.vehicleDensity > 0),
             menu = 'ys_traffic_menu',
         }
     end
 
-    -- 3. Gestion des scénarios
+    -- 3. Scenario Management
     if Config.Modules.scenarios then
         options[#options + 1] = {
-            title = 'Gestion des Scénarios',
+            title = 'Scenario Management',
             description = statusBadge(YS.State.scenariosEnabled),
             menu = 'ys_scenarios_menu',
         }
     end
 
-    -- 4. Gestion des événements
+    -- 4. Event Management
     if Config.Modules.events then
         options[#options + 1] = {
-            title = 'Gestion des Événements',
+            title = 'Event Management',
             description = statusBadge(YS.State.randomEventsEnabled),
             menu = 'ys_events_menu',
         }
     end
 
-    -- 5. Contrôle des densités
+    -- 5. Density Control
     if Config.Modules.density then
         options[#options + 1] = {
-            title = 'Contrôle des Densités',
-            description = 'Ajustement fin des populations',
+            title = 'Density Control',
+            description = 'Fine-tune population settings',
             menu = 'ys_density_menu',
         }
     end
 
-    -- 6. Presets rapides
+    -- 6. Quick Presets
     if Config.Modules.presets then
         options[#options + 1] = {
-            title = 'Presets Rapides',
-            description = 'Profils de configuration prédéfinis',
+            title = 'Quick Presets',
+            description = 'Predefined configuration profiles',
             menu = 'ys_presets_menu',
         }
     end
 
-    -- 7. Statistiques en direct
+    -- 7. Live Statistics
     if Config.Modules.stats then
         options[#options + 1] = {
-            title = 'Statistiques en Direct',
-            description = 'Compteurs et performances',
+            title = 'Live Statistics',
+            description = 'Counters and performance',
             menu = 'ys_stats_menu',
         }
     end
 
-    -- 8. Paramètres avancés
+    -- 8. Advanced Settings
     if Config.Modules.advanced then
         options[#options + 1] = {
-            title = 'Paramètres Avancés',
-            description = 'Configuration et sauvegarde',
+            title = 'Advanced Settings',
+            description = 'Configuration and saving',
             menu = 'ys_advanced_menu',
         }
     end
@@ -164,35 +164,35 @@ function RegisterPedsMenu()
 
     lib.registerContext({
         id = 'ys_peds_menu',
-        title = 'Gestion des PNJ',
+        title = 'NPC Management',
         menu = 'ys_main_menu',
         options = {
             {
-                title = 'État Actuel',
-                description = 'Densité: ' .. percentLabel(YS.State.pedDensity) .. ' | PNJ chargés: ~b~' .. YS.Stats.pedCount .. '~s~',
+                title = 'Current Status',
+                description = 'Density: ' .. percentLabel(YS.State.pedDensity) .. ' | Loaded NPCs: ~b~' .. YS.Stats.pedCount .. '~s~',
                 readOnly = true,
             },
             {
-                title = 'Activer les PNJ',
-                description = 'Rétablir la population de PNJ par défaut',
+                title = 'Enable NPCs',
+                description = 'Restore default NPC population',
                 onSelect = function()
                     SetPedDensityValue(Config.Defaults.pedDensity > 0 and Config.Defaults.pedDensity or 0.5)
-                    YS.Notify('PNJ activés — Densité: ' .. percentLabel(YS.State.pedDensity), 'success')
+                    YS.Notify('NPCs enabled — Density: ' .. percentLabel(YS.State.pedDensity), 'success')
                     OpenMainMenu()
                 end,
             },
             {
-                title = 'Désactiver les PNJ',
-                description = 'Supprimer tous les PNJ ambiants',
+                title = 'Disable NPCs',
+                description = 'Remove all ambient NPCs',
                 onSelect = function()
                     SetPedDensityValue(0.0)
-                    YS.Notify('PNJ désactivés', 'info')
+                    YS.Notify('NPCs disabled', 'info')
                     OpenMainMenu()
                 end,
             },
             {
-                title = 'Compteur PNJ',
-                description = 'PNJ actuellement chargés: ~b~' .. YS.Stats.pedCount .. '~s~',
+                title = 'NPC Counter',
+                description = 'NPCs currently loaded: ~b~' .. YS.Stats.pedCount .. '~s~',
                 readOnly = true,
             },
         },
@@ -208,35 +208,35 @@ function RegisterTrafficMenu()
 
     lib.registerContext({
         id = 'ys_traffic_menu',
-        title = 'Gestion du Trafic',
+        title = 'Traffic Management',
         menu = 'ys_main_menu',
         options = {
             {
-                title = 'État Actuel',
-                description = 'Densité: ' .. percentLabel(YS.State.vehicleDensity) .. ' | Véhicules chargés: ~b~' .. YS.Stats.vehicleCount .. '~s~',
+                title = 'Current Status',
+                description = 'Density: ' .. percentLabel(YS.State.vehicleDensity) .. ' | Loaded Vehicles: ~b~' .. YS.Stats.vehicleCount .. '~s~',
                 readOnly = true,
             },
             {
-                title = 'Activer le Trafic',
-                description = 'Rétablir le trafic routier par défaut',
+                title = 'Enable Traffic',
+                description = 'Restore default traffic density',
                 onSelect = function()
                     SetVehicleDensityValue(Config.Defaults.vehicleDensity > 0 and Config.Defaults.vehicleDensity or 0.5)
-                    YS.Notify('Trafic activé — Densité: ' .. percentLabel(YS.State.vehicleDensity), 'success')
+                    YS.Notify('Traffic enabled — Density: ' .. percentLabel(YS.State.vehicleDensity), 'success')
                     OpenMainMenu()
                 end,
             },
             {
-                title = 'Désactiver le Trafic',
-                description = 'Supprimer tout le trafic routier',
+                title = 'Disable Traffic',
+                description = 'Remove all road traffic',
                 onSelect = function()
                     SetVehicleDensityValue(0.0)
-                    YS.Notify('Trafic désactivé', 'info')
+                    YS.Notify('Traffic disabled', 'info')
                     OpenMainMenu()
                 end,
             },
             {
-                title = 'Compteur Véhicules',
-                description = 'Véhicules actuellement chargés: ~b~' .. YS.Stats.vehicleCount .. '~s~',
+                title = 'Vehicle Counter',
+                description = 'Vehicles currently loaded: ~b~' .. YS.Stats.vehicleCount .. '~s~',
                 readOnly = true,
             },
         },
@@ -250,21 +250,21 @@ end
 function RegisterScenariosMenu()
     local options = {
         {
-            title = 'État Global',
-            description = 'Scénarios: ' .. statusBadge(YS.State.scenariosEnabled),
+            title = 'Global Status',
+            description = 'Scenarios: ' .. statusBadge(YS.State.scenariosEnabled),
             readOnly = true,
         },
         {
-            title = 'Activer Tous les Scénarios',
-            description = 'Rétablir tous les scénarios GTA V',
+            title = 'Enable All Scenarios',
+            description = 'Restore all GTA V scenario types',
             onSelect = function()
                 ToggleAllScenarios(true)
                 OpenMainMenu()
             end,
         },
         {
-            title = 'Désactiver Tous les Scénarios',
-            description = 'Supprimer tous les scénarios GTA V',
+            title = 'Disable All Scenarios',
+            description = 'Stop all GTA V scenario types',
             onSelect = function()
                 ToggleAllScenarios(false)
                 OpenMainMenu()
@@ -277,7 +277,7 @@ function RegisterScenariosMenu()
         local enabled = GetScenarioCategoryState(categoryKey)
         options[#options + 1] = {
             title = category.label,
-            description = statusBadge(enabled) .. ' — ' .. #category.scenarios .. ' scénario(s)',
+            description = statusBadge(enabled) .. ' — ' .. #category.scenarios .. ' scenario(s)',
             onSelect = function()
                 ToggleScenarioCategory(categoryKey, not enabled)
                 OpenMainMenu()
@@ -287,7 +287,7 @@ function RegisterScenariosMenu()
 
     lib.registerContext({
         id = 'ys_scenarios_menu',
-        title = 'Gestion des Scénarios',
+        title = 'Scenario Management',
         menu = 'ys_main_menu',
         options = options,
     })
@@ -302,25 +302,25 @@ function RegisterEventsMenu()
 
     lib.registerContext({
         id = 'ys_events_menu',
-        title = 'Gestion des Événements',
+        title = 'Event Management',
         menu = 'ys_main_menu',
         options = {
             {
-                title = 'État Actuel',
-                description = 'Événements aléatoires: ' .. statusBadge(isActive),
+                title = 'Current Status',
+                description = 'Random events: ' .. statusBadge(isActive),
                 readOnly = true,
             },
             {
-                title = 'Activer les Événements',
-                description = 'Réactiver les événements aléatoires GTA V',
+                title = 'Enable Events',
+                description = 'Re-enable GTA V random ambient events',
                 onSelect = function()
                     ToggleRandomEvents(true)
                     OpenMainMenu()
                 end,
             },
             {
-                title = 'Désactiver les Événements',
-                description = 'Supprimer tous les événements aléatoires',
+                title = 'Disable Events',
+                description = 'Stop all random ambient events',
                 onSelect = function()
                     ToggleRandomEvents(false)
                     OpenMainMenu()
@@ -344,10 +344,10 @@ function RegisterDensityMenu()
         local label = math.floor(val * 100) .. '%'
         local isCurrent = (math.floor(YS.State.pedDensity * 10) == i)
         pedOptions[#pedOptions + 1] = {
-            title = isCurrent and (label .. ' (Actuel)') or label,
+            title = isCurrent and (label .. ' (Current)') or label,
             onSelect = function()
                 SetPedDensityValue(val)
-                YS.Notify('Densité PNJ: ' .. label, 'success')
+                YS.Notify('NPC Density: ' .. label, 'success')
                 OpenMainMenu()
             end,
         }
@@ -359,10 +359,10 @@ function RegisterDensityMenu()
         local label = math.floor(val * 100) .. '%'
         local isCurrent = (math.floor(YS.State.vehicleDensity * 10) == i)
         vehOptions[#vehOptions + 1] = {
-            title = isCurrent and (label .. ' (Actuel)') or label,
+            title = isCurrent and (label .. ' (Current)') or label,
             onSelect = function()
                 SetVehicleDensityValue(val)
-                YS.Notify('Densité véhicules: ' .. label, 'success')
+                YS.Notify('Vehicle Density: ' .. label, 'success')
                 OpenMainMenu()
             end,
         }
@@ -371,7 +371,7 @@ function RegisterDensityMenu()
     -- Ped density sub-menu
     lib.registerContext({
         id = 'ys_density_ped_menu',
-        title = 'Densité PNJ — Actuellement: ' .. percentLabel(YS.State.pedDensity),
+        title = 'NPC Density — Currently: ' .. percentLabel(YS.State.pedDensity),
         menu = 'ys_density_menu',
         options = pedOptions,
     })
@@ -379,7 +379,7 @@ function RegisterDensityMenu()
     -- Vehicle density sub-menu
     lib.registerContext({
         id = 'ys_density_veh_menu',
-        title = 'Densité Véhicules — Actuellement: ' .. percentLabel(YS.State.vehicleDensity),
+        title = 'Vehicle Density — Currently: ' .. percentLabel(YS.State.vehicleDensity),
         menu = 'ys_density_menu',
         options = vehOptions,
     })
@@ -387,22 +387,22 @@ function RegisterDensityMenu()
     -- Main density menu
     lib.registerContext({
         id = 'ys_density_menu',
-        title = 'Contrôle des Densités',
+        title = 'Density Control',
         menu = 'ys_main_menu',
         options = {
             {
-                title = 'Aperçu',
-                description = 'PNJ: ~b~' .. percentLabel(YS.State.pedDensity) .. '~s~ | Véhicules: ~b~' .. percentLabel(YS.State.vehicleDensity) .. '~s~ | Garés: ~b~' .. percentLabel(YS.State.parkedVehicleDensity) .. '~s~',
+                title = 'Overview',
+                description = 'NPC: ~b~' .. percentLabel(YS.State.pedDensity) .. '~s~ | Vehicle: ~b~' .. percentLabel(YS.State.vehicleDensity) .. '~s~ | Parked: ~b~' .. percentLabel(YS.State.parkedVehicleDensity) .. '~s~',
                 readOnly = true,
             },
             {
-                title = 'Densité PNJ',
-                description = 'Actuellement: ' .. percentLabel(YS.State.pedDensity),
+                title = 'NPC Density',
+                description = 'Currently: ' .. percentLabel(YS.State.pedDensity),
                 menu = 'ys_density_ped_menu',
             },
             {
-                title = 'Densité Véhicules',
-                description = 'Actuellement: ' .. percentLabel(YS.State.vehicleDensity),
+                title = 'Vehicle Density',
+                description = 'Currently: ' .. percentLabel(YS.State.vehicleDensity),
                 menu = 'ys_density_veh_menu',
             },
         },
@@ -421,7 +421,7 @@ function RegisterPresetsMenu()
         local preset = Config.Presets[key]
         local isCurrent = (YS.State.activePreset == key)
         options[#options + 1] = {
-            title = preset.label .. (isCurrent and ' (Actuel)' or ''),
+            title = preset.label .. (isCurrent and ' (Current)' or ''),
             description = preset.description,
             onSelect = function()
                 YS.ApplyPreset(key)
@@ -433,15 +433,15 @@ function RegisterPresetsMenu()
     -- Custom preset info
     if YS.State.activePreset == 'custom' then
         options[#options + 1] = {
-            title = 'Mode Custom (Actuel)',
-            description = 'Configuration personnalisée active',
+            title = 'Custom Mode (Current)',
+            description = 'Custom settings configuration active',
             readOnly = true,
         }
     end
 
     lib.registerContext({
         id = 'ys_presets_menu',
-        title = 'Presets Rapides',
+        title = 'Quick Presets',
         menu = 'ys_main_menu',
         options = options,
     })
@@ -465,41 +465,41 @@ function RegisterStatsMenu()
 
     lib.registerContext({
         id = 'ys_stats_menu',
-        title = 'Statistiques en Direct',
+        title = 'Live Statistics',
         menu = 'ys_main_menu',
         options = {
             {
-                title = 'PNJ Chargés',
-                description = '~b~' .. YS.Stats.pedCount .. '~s~ PNJ dans la zone',
+                title = 'Loaded NPCs',
+                description = '~b~' .. YS.Stats.pedCount .. '~s~ NPCs in the zone',
                 readOnly = true,
             },
             {
-                title = 'Véhicules Chargés',
-                description = '~b~' .. YS.Stats.vehicleCount .. '~s~ véhicules dans la zone',
+                title = 'Loaded Vehicles',
+                description = '~b~' .. YS.Stats.vehicleCount .. '~s~ vehicles in the zone',
                 readOnly = true,
             },
             {
-                title = 'Densité PNJ',
+                title = 'NPC Density',
                 description = percentLabel(YS.State.pedDensity),
                 readOnly = true,
             },
             {
-                title = 'Densité Trafic',
+                title = 'Traffic Density',
                 description = percentLabel(YS.State.vehicleDensity),
                 readOnly = true,
             },
             {
-                title = 'Scénarios',
+                title = 'Scenarios',
                 description = statusBadge(YS.State.scenariosEnabled),
                 readOnly = true,
             },
             {
-                title = 'Événements',
+                title = 'Events',
                 description = statusBadge(YS.State.randomEventsEnabled),
                 readOnly = true,
             },
             {
-                title = 'FPS Estimés Gagnés',
+                title = 'Estimated FPS Gained',
                 description = '~g~+' .. estimatedGain .. ' FPS~s~ (estimation)',
                 readOnly = true,
             },
@@ -514,29 +514,29 @@ end
 function RegisterAdvancedMenu()
     lib.registerContext({
         id = 'ys_advanced_menu',
-        title = 'Paramètres Avancés',
+        title = 'Advanced Settings',
         menu = 'ys_main_menu',
         options = {
             {
-                title = 'Sauvegarder Maintenant',
-                description = 'Forcer la sauvegarde des paramètres actuels',
+                title = 'Save Now',
+                description = 'Force save current configuration settings',
                 onSelect = function()
                     SyncToServer()
-                    YS.Notify('Paramètres sauvegardés', 'success')
+                    YS.Notify('Settings saved successfully', 'success')
                 end,
             },
             {
-                title = 'Réinitialiser par Défaut',
-                description = 'Restaurer tous les paramètres par défaut',
+                title = 'Reset to Defaults',
+                description = 'Restore all original configurations',
                 onSelect = function()
                     lib.registerContext({
                         id = 'ys_confirm_reset',
-                        title = 'Confirmer la Réinitialisation',
+                        title = 'Confirm Reset',
                         menu = 'ys_advanced_menu',
                         options = {
                             {
-                                title = 'Oui, réinitialiser',
-                                description = 'Restaurer les valeurs par défaut de config.lua',
+                                title = 'Yes, reset settings',
+                                description = 'Restore default config.lua values',
                                 onSelect = function()
                                     YS.State.pedDensity = Config.Defaults.pedDensity
                                     YS.State.vehicleDensity = Config.Defaults.vehicleDensity
@@ -548,14 +548,14 @@ function RegisterAdvancedMenu()
                                     YS.State.activePreset = nil
                                     ApplyScenarioStates()
                                     SyncToServer()
-                                    YS.Notify('Paramètres réinitialisés', 'success')
+                                    YS.Notify('Settings reset to defaults', 'success')
                                     YS.Log('Settings reset to defaults')
                                     OpenMainMenu()
                                 end,
                             },
                             {
-                                title = 'Annuler',
-                                description = 'Retourner aux paramètres avancés',
+                                title = 'Cancel',
+                                description = 'Return to advanced settings',
                                 menu = 'ys_advanced_menu',
                             },
                         },
@@ -564,23 +564,23 @@ function RegisterAdvancedMenu()
                 end,
             },
             {
-                title = 'Phares Distants',
+                title = 'Distant Lights',
                 description = statusBadge(YS.State.distantLights),
                 onSelect = function()
                     YS.State.distantLights = not YS.State.distantLights
                     SyncToServer()
-                    local stateText = YS.State.distantLights and 'activés' or 'désactivés'
-                    YS.Notify('Phares distants ' .. stateText, 'info')
+                    local stateText = YS.State.distantLights and 'enabled' or 'disabled'
+                    YS.Notify('Distant lights ' .. stateText, 'info')
                     OpenMainMenu()
                 end,
             },
             {
-                title = 'Véhicules Garés',
-                description = 'Densité: ' .. percentLabel(YS.State.parkedVehicleDensity),
+                title = 'Parked Vehicles',
+                description = 'Density: ' .. percentLabel(YS.State.parkedVehicleDensity),
                 menu = 'ys_parked_menu',
             },
             {
-                title = 'Informations',
+                title = 'Information',
                 description = Config.UI.brand .. ' — v1.0.0\nStandalone • ESX • QBCore',
                 readOnly = true,
             },
@@ -594,10 +594,10 @@ function RegisterAdvancedMenu()
         local label = math.floor(val * 100) .. '%'
         local isCurrent = (math.floor(YS.State.parkedVehicleDensity * 10) == i)
         parkedOptions[#parkedOptions + 1] = {
-            title = isCurrent and (label .. ' (Actuel)') or label,
+            title = isCurrent and (label .. ' (Current)') or label,
             onSelect = function()
                 SetParkedDensityValue(val)
-                YS.Notify('Densité véhicules garés: ' .. label, 'success')
+                YS.Notify('Parked vehicle density: ' .. label, 'success')
                 OpenMainMenu()
             end,
         }
@@ -605,7 +605,7 @@ function RegisterAdvancedMenu()
 
     lib.registerContext({
         id = 'ys_parked_menu',
-        title = 'Densité Véhicules Garés — ' .. percentLabel(YS.State.parkedVehicleDensity),
+        title = 'Parked Vehicle Density — ' .. percentLabel(YS.State.parkedVehicleDensity),
         menu = 'ys_advanced_menu',
         options = parkedOptions,
     })

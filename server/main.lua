@@ -74,11 +74,9 @@ RegisterNetEvent('ys-controlnpc:server:saveState', function(state)
     local src = source
 
     -- Validate permission
-    if Config.Permission.restrictToAce then
-        if not IsPlayerAceAllowed(src, Config.Permission.acePermission) then
-            Log('^1Unauthorized state change attempt by ' .. (GetPlayerName(src) or src))
-            return
-        end
+    if not HasPermission(src) then
+        Log('^1Unauthorized state change attempt by ' .. (GetPlayerName(src) or src))
+        return
     end
 
     -- Validate state structure
@@ -98,13 +96,16 @@ RegisterNetEvent('ys-controlnpc:server:saveState', function(state)
     -- Log the change
     local playerName = GetPlayerName(src) or ('Player ' .. src)
     if Config.Logs.logDensity then
-        Log('State updated — PNJ: ' .. math.floor(state.pedDensity * 100) .. '% | Trafic: ' .. math.floor(state.vehicleDensity * 100) .. '% — by ' .. playerName)
+        Log('State updated — NPC: ' .. math.floor(state.pedDensity * 100) .. '% | Traffic: ' .. math.floor(state.vehicleDensity * 100) .. '% — by ' .. playerName)
     end
 
     -- Save to file
     if Config.Save.enabled then
         SaveSettings(currentState)
     end
+
+    -- Broadcast updated state to all clients in real-time
+    TriggerClientEvent('ys-controlnpc:client:receiveState', -1, currentState)
 end)
 
 -- ┌──────────────────────────────────────┐
@@ -112,10 +113,7 @@ end)
 -- └──────────────────────────────────────┘
 
 lib.callback.register('ys-controlnpc:server:checkPermission', function(source)
-    if not Config.Permission.restrictToAce then
-        return true
-    end
-    return IsPlayerAceAllowed(source, Config.Permission.acePermission)
+    return HasPermission(source)
 end)
 
 -- ┌──────────────────────────────────────┐

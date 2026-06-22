@@ -9,7 +9,7 @@
 ]]
 
 -- ┌──────────────────────────────────────┐
--- │          LOCAL STATE                  │
+-- │          LOCAL STATE                 │
 -- └──────────────────────────────────────┘
 
 YS = {}
@@ -113,8 +113,8 @@ function YS.ApplyPreset(presetKey)
     ApplyScenarioStates()
     SyncToServer()
 
-    YS.Notify(preset.label .. ' activé', 'success')
-    YS.Log(preset.label .. ' chargé')
+    YS.Notify(preset.label .. ' activated', 'success')
+    YS.Log(preset.label .. ' loaded')
 end
 
 --- Synchronize current state to the server for persistence
@@ -167,6 +167,9 @@ end)
 
 RegisterNetEvent('ys-controlnpc:client:receiveState', function(savedState)
     if savedState then
+        local oldPedDensity = YS.State.pedDensity
+        local oldVehDensity = YS.State.vehicleDensity
+
         YS.State.pedDensity = savedState.pedDensity or Config.Defaults.pedDensity
         YS.State.vehicleDensity = savedState.vehicleDensity or Config.Defaults.vehicleDensity
         YS.State.parkedVehicleDensity = savedState.parkedVehicleDensity or Config.Defaults.parkedVehicleDensity
@@ -180,6 +183,21 @@ RegisterNetEvent('ys-controlnpc:client:receiveState', function(savedState)
         if YS.State.distantLights == nil then YS.State.distantLights = Config.Defaults.distantLights end
         ApplyScenarioStates()
         YS.Debug('State loaded from server')
+
+        -- Apply scenario states dynamically
+        ApplyScenarioStates()
+
+        -- Clear existing entities immediately if density is reduced or set to 0
+        local ped = PlayerPedId()
+        if ped and ped > 0 then
+            local coords = GetEntityCoords(ped)
+            if YS.State.pedDensity < oldPedDensity or YS.State.pedDensity == 0.0 then
+                ClearAreaOfPeds(coords.x, coords.y, coords.z, 250.0, 1)
+            end
+            if YS.State.vehicleDensity < oldVehDensity or YS.State.vehicleDensity == 0.0 then
+                ClearAreaOfVehicles(coords.x, coords.y, coords.z, 250.0, false, false, false, false, false)
+            end
+        end
     end
     isReady = true
 end)
@@ -193,7 +211,7 @@ end)
 -- └──────────────────────────────────────┘
 
 local function openMenuHandler()
-    if not Config.Permission.restrictToAce then
+    if not Config.Permission.restrict then
         OpenMainMenu()
         return
     end
@@ -205,7 +223,7 @@ local function openMenuHandler()
         OpenMainMenu()
     else
         hasPermission = false
-        YS.Notify('Accès refusé — Permission manquante', 'error')
+        YS.Notify('Access denied — Missing permission', 'error')
     end
 end
 
@@ -213,13 +231,9 @@ RegisterCommand(Config.CommandMenu, function()
     openMenuHandler()
 end, false)
 
-RegisterCommand(Config.CommandMenuAlt, function()
-    openMenuHandler()
-end, false)
 
-if Config.KeyBind then
-    RegisterKeyMapping(Config.CommandMenu, 'Ouvrir YS Control NPC', 'keyboard', Config.KeyBind)
-end
+
+
 
 -- ┌──────────────────────────────────────┐
 -- │       STATS UPDATE THREAD            │

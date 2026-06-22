@@ -29,10 +29,21 @@ function SaveSettings(state)
         return
     end
 
-    SaveResourceFile(resourceName, filePath, data, -1)
-
-    if Config.Debug then
-        Log('^3Settings saved to ' .. filePath)
+    local success = SaveResourceFile(resourceName, filePath, data, -1)
+    if not success then
+        Log('^1Failed to save settings to ' .. filePath .. '. Attempting to save to root directory settings.json instead.')
+        filePath = 'settings.json'
+        success = SaveResourceFile(resourceName, filePath, data, -1)
+        if not success then
+            Log('^1Failed to save settings to root directory settings.json as well.')
+        else
+            Config.Save.file = filePath
+            Log('^2Successfully saved settings to ' .. filePath)
+        end
+    else
+        if Config.Debug then
+            Log('^3Settings saved to ' .. filePath)
+        end
     end
 end
 
@@ -45,7 +56,15 @@ function LoadSettings()
     local raw = LoadResourceFile(resourceName, filePath)
 
     if not raw or raw == '' then
-        return nil
+        -- Try loading from root as fallback
+        if filePath ~= 'settings.json' then
+            filePath = 'settings.json'
+            raw = LoadResourceFile(resourceName, filePath)
+        end
+        if not raw or raw == '' then
+            return nil
+        end
+        Config.Save.file = filePath
     end
 
     local success, data = pcall(json.decode, raw)

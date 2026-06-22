@@ -27,8 +27,8 @@ function ToggleAllScenarios(enabled)
 
     SyncToServer()
 
-    local stateText = enabled and 'activés' or 'désactivés'
-    YS.Notify('Tous les scénarios ' .. stateText, enabled and 'success' or 'info')
+    local stateText = enabled and 'enabled' or 'disabled'
+    YS.Notify('All scenarios ' .. stateText, enabled and 'success' or 'info')
 
     if Config.Logs.logActions then
         YS.Log('All scenarios ' .. (enabled and 'enabled' or 'disabled'))
@@ -51,7 +51,7 @@ function ToggleScenarioCategory(categoryKey, enabled)
 
     SyncToServer()
 
-    local stateText = enabled and 'activé' or 'désactivé'
+    local stateText = enabled and 'enabled' or 'disabled'
     YS.Notify(category.label .. ' ' .. stateText, enabled and 'success' or 'info')
 
     if Config.Logs.logActions then
@@ -77,8 +77,8 @@ function ToggleRandomEvents(enabled)
     SetRandomEventFlag(enabled)
     SyncToServer()
 
-    local stateText = enabled and 'activés' or 'désactivés'
-    YS.Notify('Événements aléatoires ' .. stateText, enabled and 'success' or 'info')
+    local stateText = enabled and 'enabled' or 'disabled'
+    YS.Notify('Random events ' .. stateText, enabled and 'success' or 'info')
 
     if Config.Logs.logActions then
         YS.Log('Random events ' .. (enabled and 'enabled' or 'disabled'))

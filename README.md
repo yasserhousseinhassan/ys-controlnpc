@@ -1,32 +1,32 @@
 # YS-CONTROLNPC
 
-> **Premium NPC & Traffic Control System for FiveM**
+> **Free NPC & Traffic Control System for FiveM**
 > Developed by **Yasser Storm Development**
 
 ---
 
 ## Description
 
-**ys-controlnpc** est une ressource FiveM premium qui offre un contrôle complet et dynamique de la population du monde GTA V. Gérez les PNJ, le trafic, les scénarios et les événements en temps réel via une interface OX Lib élégante — sans aucun redémarrage requis.
+**ys-controlnpc** is a free and open-source FiveM resource that provides complete and dynamic control over the GTA V world population. Manage NPCs, traffic, scenarios, and events in real time through a sleek OX Lib interface — no server restart required.
 
 ---
 
-## Fonctionnalités
+## Features
 
 | Module | Description |
 |---|---|
-| **Gestion des PNJ** | Activation/désactivation/densité des piétons |
-| **Gestion du Trafic** | Contrôle du trafic routier et des véhicules garés |
-| **Scénarios GTA V** | Contrôle par catégorie (police, ambulance, etc.) |
-| **Événements Aléatoires** | Toggle des événements aléatoires du mode solo |
-| **Contrôle des Densités** | Sliders de densité de 0% à 100% par paliers de 10% |
-| **Presets Rapides** | Performance, Roleplay, Semi-RP, Vanilla, Custom |
-| **Statistiques Temps Réel** | Compteurs, densités, FPS estimés gagnés |
-| **Paramètres Avancés** | Sauvegarde, réinitialisation, phares distants |
+| **NPC Management** | Toggle pedestrian activation, deactivation, and density |
+| **Traffic Management** | Control road traffic and parked vehicles density |
+| **GTA V Scenarios** | Grouped scenario controls by category (police, ambulance, etc.) |
+| **Random Events** | Toggle GTA V singleplayer random ambient world events |
+| **Density Control** | Fine-tune population densities from 0% to 100% in 10% steps |
+| **Quick Presets** | Quick profiles: Performance, Roleplay, Semi-RP, Vanilla, Custom |
+| **Live Statistics** | Live entity counters, active density values, and estimated FPS gained |
+| **Advanced Settings** | Save state, settings reset, and distant headlights controls |
 
 ---
 
-## Dépendances
+## Dependencies
 
 - [ox_lib](https://github.com/overextended/ox_lib)
 
@@ -34,126 +34,124 @@
 
 ## Installation
 
-1. Télécharger et placer `ys-controlnpc` dans votre dossier `resources/`
-2. Ajouter `ensure ox_lib` avant `ensure ys-controlnpc` dans votre `server.cfg`
-3. Ajouter `ensure ys-controlnpc` dans votre `server.cfg`
-4. Configurer les permissions ACE (voir ci-dessous)
-5. Redémarrer le serveur
+1. Download and place `ys-controlnpc` in your server's `resources/` folder.
+2. Add `ensure ox_lib` before `ensure ys-controlnpc` in your `server.cfg`.
+3. Add `ensure ys-controlnpc` to your `server.cfg`.
+4. Configure permissions (optional, see below).
+5. Restart your server.
 
----
+## Permissions
 
-## Permissions ACE
+By default, the script dynamically restricts menu access to administrators, completely plug-and-play without editing your config files.
 
-Ajoutez ces lignes à votre `server.cfg` :
+### 1. Automatic Admin Detection (Zero Configuration)
+On startup, the resource automatically registers ACE permissions for standard admin groups (`group.admin`, `group.superadmin`, and `group.god`). If your administrators are defined in txAdmin or standard server configurations, **they will immediately have access without you needing to edit your `server.cfg`**.
+
+### 2. Manual Custom Access (Optional)
+If you want to grant access to a specific player manually via ACE, you can add this line to your `server.cfg`:
 
 ```cfg
-# Donner accès au groupe admin
-add_ace group.admin ys.controlnpc allow
-
-# Ou pour un joueur spécifique
 add_ace identifier.license:XXXXXXXXXXXXXX ys.controlnpc allow
 ```
 
-> **Note :** Vous pouvez désactiver la restriction ACE en modifiant `Config.Permission.restrictToAce = false` dans `config.lua`.
+### 3. Framework Admin Groups (ESX & QBCore)
+If `checkFramework = true` is enabled in `config.lua`, the script will automatically detect ESX or QBCore and verify if the player belongs to any of the groups listed in `allowedGroups` (default is `admin`, `superadmin`, and `god`).
 
----
+> **Note:** You can completely disable authorization checks by setting `Config.Permission.restrict = false` in `config.lua`.
 
-## Commandes & Raccourcis
+## Commands
 
-| Commande / Touche | Action |
+| Command | Action |
 |---|---|
-| `/npcmenu` | Ouvre le menu principal |
-| `/controlnpc` | Ouvre le menu principal (alias) |
-| `F5` | Raccourci clavier (configurable) |
+| `/npcmenu` | Opens the main menu |
 
 ---
 
 ## Presets
 
-| Preset | PNJ | Trafic | Scénarios | Événements |
+| Preset | NPCs | Traffic | Scenarios | Events |
 |---|---|---|---|---|
-| **Performance** | 0% | 0% | Non | Non |
-| **Roleplay** | 25% | 25% | Oui | Non |
-| **Semi-RP** | 50% | 50% | Oui | Oui |
-| **Vanilla GTA** | 100% | 100% | Oui | Oui |
+| **Performance** | 0% | 0% | No | No |
+| **Roleplay** | 25% | 25% | Yes | No |
+| **Semi-RP** | 50% | 50% | Yes | Yes |
+| **Vanilla GTA** | 100% | 100% | Yes | Yes |
 | **Custom** | Configurable | Configurable | Configurable | Configurable |
 
 ---
 
-## Structure du Projet
+## Project Structure
 
 ```
 ys-controlnpc/
-├── fxmanifest.lua          # Manifest FiveM
-├── config.lua              # Configuration complète
+├── fxmanifest.lua          # FiveM resource manifest
+├── config.lua              # Full configuration settings
 ├── client/
-│   ├── main.lua            # Logique client principale
-│   ├── menu.lua            # Interface OX Lib
-│   ├── density.lua         # Contrôle des densités
-│   └── scenarios.lua       # Gestion des scénarios
+│   ├── main.lua            # Client-side core logic
+│   ├── menu.lua            # OX Lib menu interface
+│   ├── density.lua         # Density multiplier control thread
+│   └── scenarios.lua       # Scenario control functions
 ├── server/
-│   ├── main.lua            # Logique serveur principale
-│   ├── permissions.lua     # Système ACE
-│   └── save.lua            # Sauvegarde JSON
+│   ├── main.lua            # Server-side core logic
+│   ├── permissions.lua     # ACE permission validation
+│   └── save.lua            # JSON settings persistence
 ├── data/
-│   └── settings.json       # Fichier de sauvegarde
+│   └── settings.json       # Persisted settings file
 └── README.md
 ```
 
 ---
 
-## Compatibilité
+## Compatibility
 
 - Standalone
 - ESX
 - QBCore
 - OneSync Infinity
-- 128+ joueurs
-- 256+ joueurs
+- 128+ players
+- 256+ players
 
 ---
 
 ## Performance
 
-- **Consommation :** ~0.00 ms au repos
-- **Thread unique** pour les densités (optimisé)
-- **Pas de thread** pour les scénarios (application unique à chaque changement)
-- **Pas de polling inutile**
+- **Consumption:** ~0.00 ms when idle
+- **Single thread** for density multiplier application (optimized)
+- **Zero threads** for scenarios (applied once upon state changes)
+- **No unnecessary polling**
 
 ---
 
-## Logs Console
+## Console Logs
 
-Les actions sont loguées avec le préfixe `[YS-CONTROLNPC]` :
+Administrative and density actions are logged with the prefix `[YS-CONTROLNPC]`:
 
 ```
 [YS-CONTROLNPC] Resource started — Yasser Storm Development
-[YS-CONTROLNPC] State updated — PNJ: 25% | Trafic: 25% — by AdminName
+[YS-CONTROLNPC] State updated — NPC: 25% | Traffic: 25% — by AdminName
 [YS-CONTROLNPC] All scenarios disabled
-[YS-CONTROLNPC] Mode Performance chargé
+[YS-CONTROLNPC] Performance Mode loaded
 [YS-CONTROLNPC] Settings saved on resource stop
 ```
 
 ---
 
-## Sauvegarde
+## Persistence / Auto-Save
 
-Les paramètres sont automatiquement sauvegardés dans `data/settings.json` et restaurés :
+Your current configuration is automatically saved to `data/settings.json` and restored:
 
-- Après reconnexion d'un joueur
-- Après redémarrage de la ressource
-- Après redémarrage du serveur
+- After a player reconnects
+- After the resource is restarted
+- After the server is restarted
 
 ---
 
-## Licence
+## License
 
-© 2024 **Yasser Storm Development** — Tous droits réservés.
-Ce script est protégé et ne peut être redistribué sans autorisation.
+This project is licensed under the MIT License. Feel free to use, modify, and redistribute it.
 
 ---
 
 <p align="center">
   <b>Yasser Storm Development</b><br>
-  Premium FiveM Resources
+  Free FiveM Resources
 </p>
