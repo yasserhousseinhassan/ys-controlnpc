@@ -1,10 +1,10 @@
 {
-    "vehicleDensity": 0.0,
-    "scenarioOverrides": [],
-    "scenariosEnabled": false,
-    "parkedVehicleDensity": 0.0,
-    "activePreset": "performance",
     "randomEventsEnabled": false,
+    "scenarioOverrides": [],
+    "distantLights": false,
+    "vehicleDensity": 0.0,
     "pedDensity": 0.0,
-    "distantLights": false
+    "parkedVehicleDensity": 0.0,
+    "scenariosEnabled": false,
+    "activePreset": "performance"
 }

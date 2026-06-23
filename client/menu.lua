@@ -518,11 +518,13 @@ function RegisterAdvancedMenu()
         menu = 'ys_main_menu',
         options = {
             {
-                title = 'Save Now',
-                description = 'Force save current configuration settings',
+                title = 'Save Settings',
+                description = 'Save current modifications to settings.json permanently',
+                icon = 'floppy-disk',
                 onSelect = function()
                     SyncToServer()
-                    YS.Notify('Settings saved successfully', 'success')
+                    TriggerServerEvent('ys-controlnpc:server:persistSettings')
+                    YS.Notify('Settings saved permanently', 'success')
                 end,
             },
             {

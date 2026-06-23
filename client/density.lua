@@ -27,7 +27,6 @@ CreateThread(function()
         SetVehicleDensityMultiplierThisFrame(vehDensity)
         SetRandomVehicleDensityMultiplierThisFrame(vehDensity)
         SetParkedVehicleDensityMultiplierThisFrame(parkedDensity)
-        SetScenarioVehicleDensityMultiplierThisFrame(vehDensity)
         SetAmbientVehicleRangeMultiplierThisFrame(vehDensity > 0.0 and 1.0 or 0.0)
 
         -- Random events

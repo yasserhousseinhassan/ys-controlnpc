@@ -102,9 +102,9 @@ Config.Presets = {
 -- └──────────────────────────────────────┘
 
 Config.Save = {
-    enabled = true,                           -- Enable auto-save of settings
+    enabled = true,                           -- Enable saving of settings
     file = 'data/settings.json',              -- Save file path (relative to resource)
-    interval = 30,                            -- Auto-save interval in seconds (0 = save on change only)
+    interval = 0,                             -- Auto-save interval in seconds (0 = disabled, manual save via menu button only)
 }
 
 -- ┌──────────────────────────────────────┐

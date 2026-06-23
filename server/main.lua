@@ -99,13 +99,24 @@ RegisterNetEvent('ys-controlnpc:server:saveState', function(state)
         Log('State updated — NPC: ' .. math.floor(state.pedDensity * 100) .. '% | Traffic: ' .. math.floor(state.vehicleDensity * 100) .. '% — by ' .. playerName)
     end
 
-    -- Save to file
-    if Config.Save.enabled then
-        SaveSettings(currentState)
-    end
-
     -- Broadcast updated state to all clients in real-time
     TriggerClientEvent('ys-controlnpc:client:receiveState', -1, currentState)
+end)
+
+--- Client manually persists settings to file
+RegisterNetEvent('ys-controlnpc:server:persistSettings', function()
+    local src = source
+
+    -- Validate permission
+    if not HasPermission(src) then
+        Log('^1Unauthorized persist attempt by ' .. (GetPlayerName(src) or src))
+        return
+    end
+
+    if currentState and Config.Save.enabled then
+        SaveSettings(currentState)
+        Log('Settings saved manually to settings.json by ' .. (GetPlayerName(src) or src))
+    end
 end)
 
 -- ┌──────────────────────────────────────┐
@@ -115,21 +126,6 @@ end)
 lib.callback.register('ys-controlnpc:server:checkPermission', function(source)
     return HasPermission(source)
 end)
-
--- ┌──────────────────────────────────────┐
--- │       AUTO-SAVE INTERVAL             │
--- └──────────────────────────────────────┘
-
-if Config.Save.enabled and Config.Save.interval > 0 then
-    CreateThread(function()
-        while true do
-            Wait(Config.Save.interval * 1000)
-            if currentState then
-                SaveSettings(currentState)
-            end
-        end
-    end)
-end
 
 -- ┌──────────────────────────────────────┐
 -- │       RESOURCE STOP HANDLER          │
